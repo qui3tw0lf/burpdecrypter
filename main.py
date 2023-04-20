@@ -12,18 +12,18 @@ from java.io import PrintWriter, File
 from javax.swing.table import DefaultTableModel
 from javax.swing import JPanel, JTable, BoxLayout, JSplitPane, JButton, JFileChooser, JTextField, JFrame, JLabel, JScrollPane, JTabbedPane, JOptionPane
 
-MODULES_DIR = "/tmp/plugins/" # REPLACE THIS WITH YOUR OWN PLUGIN DIR
+PLUGINS_DIR = "/tmp/plugins/" # REPLACE THIS WITH YOUR OWN PLUGIN DIR
 PYTHON_PATH = "/usr/local/bin/python3" # REPLACE THIS WITH YOUR OWN PYTHON3 PATH IF THIS DOESN'T WORK
 
 
 ret_function_d_text = None
-script_path = MODULES_DIR
+script_path = PLUGINS_DIR
 request_list = []
 
 
 def decryptData(body, req_headers=None, headers=None):
     # NOTE: Experimental - Trying to load scripts using subprocess instead of imp.
-    if script_path == MODULES_DIR:
+    if script_path == PLUGINS_DIR:
         return "No module selected!"
     try:
         with open("/tmp/burp_decrypter_data.txt", "w") as fd:
@@ -39,7 +39,7 @@ def decryptData(body, req_headers=None, headers=None):
 
 def encryptData(body, req_headers=None, headers=None):
     # NOTE: Experimental - Trying to load scripts using subprocess instead of imp.
-    if script_path == MODULES_DIR:
+    if script_path == PLUGINS_DIR:
         return "No module selected!"
     with open("/tmp/burp_decrypter_data.txt", "w") as fd:
             fd.write(b64encode(body) + " | " + b64encode(str([x for x in req_headers])))
@@ -178,8 +178,8 @@ class Table(JTable):
         self.setModel(dataModel)
         
     def updateTable(self):
-        files = os.listdir(MODULES_DIR)
-        print("Files in ", MODULES_DIR)
+        files = os.listdir(PLUGINS_DIR)
+        print("Files in ", PLUGINS_DIR)
         print(files)
         cols = ["Module List"]
         self.data = [[x] for x in files if "." in x and x.split(".")[1] == 'py']
@@ -192,5 +192,5 @@ class Table(JTable):
         global ret_function_d, ret_function_e, ret_function_d_text, script_path
         logEntry = self.data[row]
         print("Selected: ", logEntry[0])
-        script_path = MODULES_DIR + logEntry[0]
+        script_path = PLUGINS_DIR + logEntry[0]
         JTable.changeSelection(self, row, col, toggle, extend)
