@@ -31,14 +31,14 @@ aes_key = "test1234test1234"
 def decrypt():
     cipher = AES.new(aes_key.encode(), AES.MODE_CBC, aes_key.encode())
     plaintext = unpad(cipher.decrypt(b64decode(body)), 16)
-    print(plaintext) # Output of the script will get printed in the Decrypted Data tab.
+    print(plaintext.decode()) # Output of the script will get printed in the Decrypted Data tab.
     return plaintext
     
 def encrypt():
     cipher = AES.new(aes_key.encode(), AES.MODE_CBC, aes_key.encode())
     ciphertext = cipher.encrypt(pad(body, AES.block_size))
     ciphertext = b64encode(ciphertext)
-    print(ciphertext)  # Output of the script will get printed in the Raw/Pretty tab.
+    print(ciphertext.decode())  # Output of the script will get printed in the Raw/Pretty tab.
     return ciphertext
         
 run()
